@@ -1,0 +1,13 @@
+services:
+    weather-app:
+        image: weather-app:latest
+        ports:
+              - "80:3000"
+            deploy:
+              replicas: 2
+              restart_policy:
+                condition: on-failure
+              resources:
+                limits:
+                  cpus: "0.50"
+                  memory: 256M
