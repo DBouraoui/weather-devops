@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   weather-app:
-    image: weather-app:latest
+    image: dbouraoui/weather-app:latest
     deploy:
       replicas: 2
       labels:
