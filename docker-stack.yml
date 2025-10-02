@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.dashboard=true"
+      - "--providers.docker.swarmmode=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=contact@dbouraoui.fr"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - traefik_webgateway
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  weather-app:
+    image: dbouraoui/weather-app:latest
+    networks:
+      - traefik_webgateway
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.weather.rule=Host(`signacore.fr`)"
+      - "traefik.http.routers.weather.entrypoints=websecure"
+      - "traefik.http.routers.weather.tls.certresolver=myresolver"
+      - "traefik.http.services.weather.loadbalancer.server.port=3000"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+
+networks:
+  traefik_webgateway:
+    external: true
