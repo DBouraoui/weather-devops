@@ -8,7 +8,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.weather.rule=Host(`signacore.fr`)"
-        - "traefik.http.routers.weather.entrypoints=websecure"
+        - "traefik.http.routers.weather.entrypoints=web,websecure"
         - "traefik.http.routers.weather.tls.certresolver=myresolver"
         - "traefik.http.services.weather.loadbalancer.server.port=3000"
       restart_policy:
