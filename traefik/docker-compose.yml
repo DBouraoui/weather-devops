@@ -1,26 +1,26 @@
-version: "3.9"
-
 services:
   traefik:
     image: traefik:v3.0
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /home/ubuntu/weather-devops/letsencrypt:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
-      - "--providers.docker=true"
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"   # ⚠️ uniquement en dev local
+      - "--providers.docker=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.myresolver.acme.email=contact@dbouraoui.fr"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--api.dashboard=true"
-      - "--api.insecure=false"
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - webgateway
+
+networks:
+  webgateway:
+    driver: bridge

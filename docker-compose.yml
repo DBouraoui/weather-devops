@@ -1,0 +1,16 @@
+services:
+  weather-app:
+    image: dbouraoui/weather-app:latest
+    expose:
+      - "80"
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.weather.rule=Host(`weather.localhost`)"
+      - "traefik.http.routers.weather.entrypoints=web"
+      - "traefik.http.services.weather.loadbalancer.server.port=3000"
+networks:
+  traefik:
+    external:
+      name: traefik_webgateway
