@@ -7,8 +7,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - /home/ubuntu/weather-devops/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
     command:
       - "--providers.docker.swarmMode=true"
       - "--providers.docker.endpoint=unix:///var/run/docker.sock"
