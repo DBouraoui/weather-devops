@@ -1,13 +1,15 @@
+version: "3.9"
+
 services:
-    weather-app:
-        image: weather-app:latest
-        ports:
-              - "80:3000"
-            deploy:
-              replicas: 2
-              restart_policy:
-                condition: on-failure
-              resources:
-                limits:
-                  cpus: "0.50"
-                  memory: 256M
+  weather-app:
+    image: weather-app:latest   # ou tonpseudo/weather-app:latest si tu pousses sur Docker Hub
+    ports:
+      - "80:3000"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
