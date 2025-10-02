@@ -10,7 +10,7 @@ services:
       - /home/ubuntu/weather-devops/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
-      - "--providers.docker.swarmMode=true"
+      - "--providers.docker=true"
       - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
