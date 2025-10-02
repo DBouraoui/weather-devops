@@ -5,7 +5,6 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--api.dashboard=true"
-      - "--api.insecure=true"   # ⚠️ uniquement en dev local
       - "--providers.docker=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
@@ -19,8 +18,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./letsencrypt:/letsencrypt
     networks:
-      - webgateway
+      - traefik_webgateway
 
 networks:
-  webgateway:
-    driver: bridge
+  traefik_webgateway:
+    external: true
