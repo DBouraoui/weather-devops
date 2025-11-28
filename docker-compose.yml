@@ -4,6 +4,8 @@ services:
     platform: "linux/amd64"
     networks:
       - traefik_webgateway
+    port:
+      - "3000:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.weather.rule=Host(`signacore.fr`)"
