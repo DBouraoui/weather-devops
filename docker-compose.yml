@@ -1,6 +1,7 @@
 services:
   weather-app:
     image: dbouraoui/weather-app:latest
+    platform: "linux/amd64"
     networks:
       - traefik_webgateway
     labels:
